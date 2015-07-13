@@ -15,6 +15,13 @@ import com.myproject.SearchSuggest;
 import com.myproject.exception.IMApiServiceException;
 import com.myproject.manager.SearchManager;
 
+/**
+ * This class represents all the relevant Information mgmt related API calls for 
+ * the Self service portal.
+ * 
+ * @author anand
+ *
+ */
 
 @Path("/api")
 public class SearchService {

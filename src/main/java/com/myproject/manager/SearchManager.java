@@ -12,11 +12,12 @@ import java.util.List;
 import com.myproject.Image;
 import com.myproject.SearchResultItem;
 import com.myproject.SearchSuggest;
+import com.myproject.exception.IMApiServiceException;
+import com.myproject.exception.IMApiServiceExceptionType;
 
 public class SearchManager {
 	
 	private static Connection conn = null;
-	private static Statement statement = null;
 	private static PreparedStatement preparedStatement = null;
 	private static ResultSet resultSet = null;
 	private static String JDBC_DRIVER = "com.mysql.jdbc.Driver";
@@ -38,7 +39,7 @@ public class SearchManager {
 		}
 	}
 
-	public static List<SearchSuggest> getSuggestions(String searchString) {
+	public static List<SearchSuggest> getSuggestions(String searchString) throws IMApiServiceException {
 		String post_match=searchString+"%";
 		String pre_match="%"+searchString;
 		String full="%"+searchString+"%";
@@ -64,8 +65,9 @@ public class SearchManager {
 			}
 			
 		} catch (SQLException e) {
-
 			e.printStackTrace();
+			throw new IMApiServiceException(
+					IMApiServiceExceptionType.INTERNAL_ERROR);
 		}finally {
 			close();
 		}
@@ -73,7 +75,7 @@ public class SearchManager {
 		return suggests;
 	}
 
-	public static List<SearchResultItem> getSearchResult(String searchString) {
+	public static List<SearchResultItem> getSearchResult(String searchString) throws IMApiServiceException {
 		String post_match=searchString+"%";
 		String pre_match="%"+searchString;
 		String full="%"+searchString+"%";
@@ -105,10 +107,10 @@ public class SearchManager {
 				result.add(item);
 			}
 			
-			//statement.close();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			throw new IMApiServiceException(
+					IMApiServiceExceptionType.INTERNAL_ERROR);
 		}finally {
 			close();
 		}
