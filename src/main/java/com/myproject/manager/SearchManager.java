@@ -38,14 +38,25 @@ public class SearchManager {
 		}
 	}
 
-	public static List<SearchSuggest> getSuggestions(String key) {
+	public static List<SearchSuggest> getSuggestions(String searchString) {
+		String post_match=searchString+"%";
+		String pre_match="%"+searchString;
+		String full="%"+searchString+"%";
 		
 		List<SearchSuggest> suggests = new ArrayList<SearchSuggest>();
-		String query = "select ObjectTitleShort,ObjectDescriptionShort,ObjectIcon from portaldb01.Object";
+		String query = "select ObjectTitleShort,ObjectDescriptionShort,ObjectIcon from portaldb01.Object"
+				+ " where upper(ObjectTitle) like upper(?)";
 
 		try {
 			preparedStatement = conn.prepareStatement(query);
-			resultSet = preparedStatement.executeQuery(query);
+			System.out.println("Prepared Statement before bind variables set:\n\t" + preparedStatement.toString());
+			if(searchString != null){
+				preparedStatement.setString(1,full );
+			}
+			
+			System.out.println("Prepared Statement after bind variables set:\n\t" + preparedStatement.toString());
+			
+			resultSet = preparedStatement.executeQuery();
 			
 			while (resultSet.next()) {
 				suggests.add(new SearchSuggest(resultSet.getString("ObjectDescriptionShort"),
@@ -62,18 +73,25 @@ public class SearchManager {
 		return suggests;
 	}
 
-	public static List<SearchResultItem> getSearchResult(String objectTitleShort) {
+	public static List<SearchResultItem> getSearchResult(String searchString) {
+		String post_match=searchString+"%";
+		String pre_match="%"+searchString;
+		String full="%"+searchString+"%";
+		
 		List<SearchResultItem> result = new ArrayList<SearchResultItem>();
 		String query = "select ObjectStatus,ObjectIcon,ObjectPreview1,ObjectURL,ObjectTitle,AuthorName,DateAuthored,"
 				+ "Likes,Previews from portaldb01.Object"
-				+ " where ObjectTitleShort=?";
+				+ " where upper(ObjectTitle) like upper(?)";
 
 		try {
 			System.out.println("SQL Statement:\n\t" + query);
 			preparedStatement = conn.prepareStatement(query);
 			
 			System.out.println("Prepared Statement before bind variables set:\n\t" + preparedStatement.toString());
-			preparedStatement.setString(1,objectTitleShort );
+			if(searchString != null){
+				preparedStatement.setString(1,full );
+			}
+			
 			System.out.println("Prepared Statement after bind variables set:\n\t" + preparedStatement.toString());
 			
 			resultSet = preparedStatement.executeQuery();
