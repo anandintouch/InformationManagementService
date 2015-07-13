@@ -12,6 +12,7 @@ import javax.ws.rs.core.Response;
 
 import com.myproject.SearchResultItem;
 import com.myproject.SearchSuggest;
+import com.myproject.exception.IMApiServiceException;
 import com.myproject.manager.SearchManager;
 
 
@@ -22,7 +23,7 @@ public class SearchService {
 	@Path("/searchresults")
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<SearchResultItem> getSearchResults(@QueryParam("userId") String userId,
-			@QueryParam("searchString") String searchString,@QueryParam("reportType") String reportType) {
+			@QueryParam("searchString") String searchString,@QueryParam("reportType") String reportType) throws IMApiServiceException {
 		
 		// Call class which would connect to DB and return aggregated search results resource
 		List<SearchResultItem> searchResults = SearchManager.getSearchResult(searchString);
@@ -35,7 +36,7 @@ public class SearchService {
 	@Path("/searchsuggestions")
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<SearchSuggest> getSearchSuggestiots(@QueryParam("userId") String userId,
-			@QueryParam("searchString") String searchString ,@QueryParam("reportType") String reportType) {
+			@QueryParam("searchString") String searchString ,@QueryParam("reportType") String reportType) throws IMApiServiceException {
 
 		// Call class which would connect to DB and return aggregated search results resource
 		List<SearchSuggest> searchSuggest = SearchManager.getSuggestions(searchString);
