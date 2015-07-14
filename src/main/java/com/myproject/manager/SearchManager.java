@@ -9,6 +9,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.myproject.DBConnection;
 import com.myproject.Image;
 import com.myproject.SearchResultItem;
 import com.myproject.SearchSuggest;
@@ -17,27 +18,8 @@ import com.myproject.exception.IMApiServiceExceptionType;
 
 public class SearchManager {
 	
-	private static Connection conn = null;
 	private static PreparedStatement preparedStatement = null;
 	private static ResultSet resultSet = null;
-	private static String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-	private static String DB_URL = "jdbc:mysql://173.194.81.134/portaldb01";
-	private static String USER = "aprakash";
-	private static String PASS = "YpL7Hz5Q";
-
-	static {
-
-		try {
-			Class.forName(JDBC_DRIVER);
-			System.out.println("Connecting to database...");
-			conn = DriverManager.getConnection(DB_URL, USER, PASS);
-			System.out.println("Connection successful !!");
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
 
 	public static List<SearchSuggest> getSuggestions(String searchString) throws IMApiServiceException {
 		String post_match=searchString+"%";
@@ -49,7 +31,7 @@ public class SearchManager {
 				+ " where upper(ObjectTitle) like upper(?)";
 
 		try {
-			preparedStatement = conn.prepareStatement(query);
+			preparedStatement = DBConnection.getConnection().prepareStatement(query);
 			System.out.println("Prepared Statement before bind variables set:\n\t" + preparedStatement.toString());
 			if(searchString != null){
 				preparedStatement.setString(1,full );
@@ -87,7 +69,7 @@ public class SearchManager {
 
 		try {
 			System.out.println("SQL Statement:\n\t" + query);
-			preparedStatement = conn.prepareStatement(query);
+			preparedStatement = DBConnection.getConnection().prepareStatement(query);
 			
 			System.out.println("Prepared Statement before bind variables set:\n\t" + preparedStatement.toString());
 			if(searchString != null){
@@ -118,6 +100,7 @@ public class SearchManager {
 		return result;
 	}
 	
+	
 	private static void close() {
 		try {
 			if (resultSet != null) {
@@ -126,9 +109,6 @@ public class SearchManager {
 			if (preparedStatement != null) {
 				preparedStatement.close();
 		    }
-			/*if (conn != null) {
-		        conn.close();
-		    }*/
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
