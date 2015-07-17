@@ -29,9 +29,11 @@ public class SearchManager {
 		List<SearchSuggest> suggests = new ArrayList<SearchSuggest>();
 		String query = "select ObjectTitleShort,ObjectDescriptionShort,ObjectIcon from portaldb01.Object"
 				+ " where upper(ObjectTitle) like upper(?)";
-
+		
+		Connection conn = null;
 		try {
-			preparedStatement = DBConnection.getConnection().prepareStatement(query);
+			conn = DBConnection.getConnection();
+			preparedStatement = conn.prepareStatement(query);
 			System.out.println("Prepared Statement before bind variables set:\n\t" + preparedStatement.toString());
 			if(searchString != null){
 				preparedStatement.setString(1,full );
@@ -51,6 +53,14 @@ public class SearchManager {
 			throw new IMApiServiceException(
 					IMApiServiceExceptionType.INTERNAL_ERROR);
 		}finally {
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 			close();
 		}
 
@@ -67,9 +77,12 @@ public class SearchManager {
 				+ "Likes,Previews from portaldb01.Object"
 				+ " where upper(ObjectTitle) like upper(?)";
 
+		Connection conn = null;
 		try {
 			System.out.println("SQL Statement:\n\t" + query);
-			preparedStatement = DBConnection.getConnection().prepareStatement(query);
+
+			conn = DBConnection.getConnection();
+			preparedStatement = conn.prepareStatement(query);
 			
 			System.out.println("Prepared Statement before bind variables set:\n\t" + preparedStatement.toString());
 			if(searchString != null){
@@ -94,6 +107,14 @@ public class SearchManager {
 			throw new IMApiServiceException(
 					IMApiServiceExceptionType.INTERNAL_ERROR);
 		}finally {
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 			close();
 		}
 

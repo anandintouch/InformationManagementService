@@ -1,7 +1,5 @@
 package com.myproject.rest;
 
-import java.util.List;
-
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -14,35 +12,43 @@ import com.myproject.Image;
 import com.myproject.Track;
 import com.myproject.Workbook;
 
+/**
+ * 
+ * @author anand
+ *
+ */
+
 @Path("/json")
-public class JSONService {
+public class JSONService extends IMSService {
 
 	@GET
 	@Path("/track")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Track getTrackInJSON() {
+	public Response getTrackInJSON() {
 
 		Track track = new Track();
 		track.setTitle("Tushion");
 		track.setSinger("Metallica");
 
-		return track;
+		return getResponse()
+				.entity(track)
+				.build();
 
 	}
 	
 	@GET
 	@Path("/workbooknames")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Workbook getWorkbookInJSON() {
+	public Response getWorkbookInJSON() {
 		Demo dem = new Demo();
 		Workbook workbook = dem.getWorkbookNames();
 		
 		//Workbook wb = new Workbook();
 		workbook.setTitle("Workbooks");
 		
-
-		return workbook;
-
+		return getResponse()
+				.entity(workbook)
+				.build();
 	}
 	
 	@GET

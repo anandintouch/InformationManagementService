@@ -24,32 +24,38 @@ import com.myproject.manager.SearchManager;
  */
 
 @Path("/api")
-public class SearchService {
+public class SearchService extends IMSService {
 	
 	@GET
 	@Path("/searchresults")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<SearchResultItem> getSearchResults(@QueryParam("userId") String userId,
+	public Response getSearchResults(@QueryParam("userId") String userId,
 			@QueryParam("searchString") String searchString,@QueryParam("reportType") String reportType) throws IMApiServiceException {
 		
 		// Call class which would connect to DB and return aggregated search results resource
 		List<SearchResultItem> searchResults = SearchManager.getSearchResult(searchString);
 		
 		//return Response.status(200).entity(searchResults.toString()).build();
-		return searchResults;
+
+		return getResponse()
+				.entity(searchResults)
+				.build();
 	}
 	
 	@GET
 	@Path("/searchsuggestions")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<SearchSuggest> getSearchSuggestiots(@QueryParam("userId") String userId,
+	public Response getSearchSuggestiots(@QueryParam("userId") String userId,
 			@QueryParam("searchString") String searchString ,@QueryParam("reportType") String reportType) throws IMApiServiceException {
 
 		// Call class which would connect to DB and return aggregated search results resource
 		List<SearchSuggest> searchSuggest = SearchManager.getSuggestions(searchString);
 
 		//return Response.status(200).entity(suggestions.toString()).build();
-		return searchSuggest;
+
+		return getResponse()
+				.entity(searchSuggest)
+				.build();
 
 	}
 

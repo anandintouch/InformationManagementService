@@ -69,6 +69,8 @@ import com.tableausoftware.documentation.api.rest.bindings.WorkbookType;
 /**
  * This class encapsulates the logic used to make requests to the Tableau Server
  * REST API. This class is implemented as a singleton.
+ * 
+ * @author anand
  */
 public class RestApiUtils {
 

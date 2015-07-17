@@ -1,5 +1,6 @@
 package com.myproject.manager;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -16,10 +17,13 @@ public class ReportManager {
 		String query = "select ObjectPreview1, ObjectDescriptionLong, 10 as AuthorCredit, 20 as BuyerCredit, 30 as CreditsToRun from portaldb01.Object"
 				+ " where ObjectTitleShort=?";
 
+		Connection conn = null;
 		try {
 			System.out.println("SQL Statement:\n\t" + query);
-			preparedStatement = DBConnection.getConnection().prepareStatement(query);
-			
+
+			conn = DBConnection.getConnection();
+			preparedStatement = conn.prepareStatement(query);
+	
 			System.out.println("Prepared Statement before bind variables set:\n\t" + preparedStatement.toString());
 			preparedStatement.setString(1,objectTitleShort );
 			System.out.println("Prepared Statement after bind variables set:\n\t" + preparedStatement.toString());
@@ -33,6 +37,14 @@ public class ReportManager {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 			if (preparedStatement != null) {
 				try {
 					preparedStatement.close();
