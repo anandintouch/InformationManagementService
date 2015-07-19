@@ -6,25 +6,29 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 public class SearchResultItem {
+	private String id;
 	public String objectURL;
 	public String objectStatus;
 	public String objectIcon;
 	public String objectPreview1;
 	public String objectTitle;
-	public String dateAuthored;
+/*	public String authorName;
+	public String dateAuthored;*/
 	public String previews;
 	public int comments;
 	public String likes;
-	public boolean isFaved;
+	
+	public SearchFilters searchFiletrs;
+/*	public boolean isFaved;
 	public boolean isLiked;
-	public boolean isSubscribed;
-	
-	
+	public boolean isSubscribed;*/
+
+
 	public SearchResultItem(){
 	}
 	
-	public SearchResultItem ( String objectURL, String objectStatus, String objectIcon, 
-			   String objectPreview1,String objectTitle,String dateAuthored,String previews,
+	public SearchResultItem (String id, String objectURL, String objectStatus, String objectIcon, 
+			   String objectPreview1,String objectTitle, String authorName, String dateAuthored,String previews,
 			   String likes) {
 
 		this.objectURL = objectURL;
@@ -32,13 +36,30 @@ public class SearchResultItem {
 		this.objectIcon = objectIcon;
 		this.objectPreview1= objectPreview1;
 		this.objectTitle = objectTitle;
-		this.dateAuthored = dateAuthored;
+/*		this.authorName = authorName;
+		this.dateAuthored = dateAuthored;*/
 		this.previews = previews;
 		this.likes = likes;
+		this.id = id;
 	
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 	
 
+	public SearchFilters getSearchFiletrs() {
+		return searchFiletrs;
+	}
+
+	public void setSearchFiletrs(SearchFilters searchFiletrs) {
+		this.searchFiletrs = searchFiletrs;
+	}
 /*	
 	public void setCartInfo (String cartMsg, String lockedMsg) {
 		this.addToCartMsg = cartMsg;

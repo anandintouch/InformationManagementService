@@ -10,6 +10,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import com.myproject.SearchResult;
 import com.myproject.SearchResultItem;
 import com.myproject.SearchSuggest;
 import com.myproject.exception.IMApiServiceException;

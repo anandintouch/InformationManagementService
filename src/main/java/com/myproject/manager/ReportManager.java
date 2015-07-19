@@ -7,6 +7,7 @@ import java.sql.SQLException;
 
 import com.myproject.DBConnection;
 import com.myproject.PreviewReport;
+import com.myproject.PreviewReport.PreviewReportItem;
 
 public class ReportManager {
 
@@ -30,9 +31,12 @@ public class ReportManager {
 			
 			resultSet = preparedStatement.executeQuery();
 			resultSet.next();
-
-			return new PreviewReport(resultSet.getString("ObjectPreview1"), resultSet.getString("ObjectDescriptionLong"), resultSet.getInt("AuthorCredit"),
-						resultSet.getInt("BuyerCredit"), resultSet.getInt("CreditsToRun"));
+			
+			PreviewReport workbook = new PreviewReport(resultSet.getInt("AuthorCredit"), resultSet.getInt("BuyerCredit"), resultSet.getInt("CreditsToRun"));
+			PreviewReportItem view = new PreviewReport.PreviewReportItem(resultSet.getString("ObjectPreview1"), resultSet.getString("ObjectDescriptionLong"));
+			workbook.views.add(view);
+			
+			return workbook;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -56,5 +60,50 @@ public class ReportManager {
 		}
 
 		return null;
+	}
+	
+	public static int increaseLikes(String objectTitleShort, String likes) {
+		String query = "update portaldb01.Object set Likes = ? where ObjectTitleShort = ?";
+
+		Connection conn = null;
+		int currentLikes = 0;
+		
+		try {
+			System.out.println("SQL Statement:\n\t" + query);
+
+			conn = DBConnection.getConnection();
+			preparedStatement = conn.prepareStatement(query);
+	
+			System.out.println("Prepared Statement before bind variables set:\n\t" + preparedStatement.toString());
+			preparedStatement.setInt(1, currentLikes + 1);
+			preparedStatement.setString(2, objectTitleShort );
+			System.out.println("Prepared Statement after bind variables set:\n\t" + preparedStatement.toString());
+			
+			preparedStatement.executeUpdate();
+			//this line must be at the end
+			currentLikes = Integer.valueOf(likes) + 1;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if (preparedStatement != null) {
+				try {
+					preparedStatement.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			
+			return currentLikes;
+		}
 	}
 }

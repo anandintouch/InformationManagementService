@@ -11,6 +11,8 @@ import java.util.List;
 
 import com.myproject.DBConnection;
 import com.myproject.Image;
+import com.myproject.SearchFilters;
+import com.myproject.SearchResult;
 import com.myproject.SearchResultItem;
 import com.myproject.SearchSuggest;
 import com.myproject.exception.IMApiServiceException;
@@ -72,6 +74,63 @@ public class SearchManager {
 		String pre_match="%"+searchString;
 		String full="%"+searchString+"%";
 		
+		//SearchResult result;
+		List<SearchResultItem> result = new ArrayList<SearchResultItem>();
+		String query = "select ObjectID,ObjectStatus,ObjectIcon,ObjectPreview1,ObjectURL,ObjectTitle,AuthorName,DateAuthored,"
+				+ "Likes,Previews from portaldb01.Object"
+				+ " where upper(ObjectTitle) like upper(?)";
+
+		Connection conn = null;
+		try {
+			System.out.println("SQL Statement:\n\t" + query);
+
+			conn = DBConnection.getConnection();
+			preparedStatement = conn.prepareStatement(query);
+			
+			System.out.println("Prepared Statement before bind variables set:\n\t" + preparedStatement.toString());
+			if(searchString != null){
+				preparedStatement.setString(1,full );
+			}
+			
+			System.out.println("Prepared Statement after bind variables set:\n\t" + preparedStatement.toString());
+			
+			resultSet = preparedStatement.executeQuery();
+			
+			while (resultSet.next()) {
+
+				SearchResultItem item = new SearchResultItem(resultSet.getString("ObjectID"),resultSet.getString("ObjectURL"), resultSet.getString("ObjectStatus"), 
+						resultSet.getString("ObjectIcon"), resultSet.getString("ObjectPreview1"), resultSet.getString("ObjectTitle"),
+						resultSet.getString("AuthorName"), resultSet.getString("DateAuthored"),resultSet.getString("Previews"),
+						resultSet.getString("Likes"));
+				SearchFilters searchFilter = new SearchFilters(resultSet.getString("AuthorName"), resultSet.getString("DateAuthored"));
+				item.setSearchFiletrs(searchFilter);
+				result.add(item);
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new IMApiServiceException(
+					IMApiServiceExceptionType.INTERNAL_ERROR);
+		}finally {
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			close();
+		}
+
+		return result;
+	}
+	
+/*	public static List<SearchResultItem> getSearchResult(String searchString) throws IMApiServiceException {
+		String post_match=searchString+"%";
+		String pre_match="%"+searchString;
+		String full="%"+searchString+"%";
+		
 		List<SearchResultItem> result = new ArrayList<SearchResultItem>();
 		String query = "select ObjectStatus,ObjectIcon,ObjectPreview1,ObjectURL,ObjectTitle,AuthorName,DateAuthored,"
 				+ "Likes,Previews from portaldb01.Object"
@@ -97,7 +156,7 @@ public class SearchManager {
 
 				SearchResultItem item = new SearchResultItem(resultSet.getString("ObjectURL"), resultSet.getString("ObjectStatus"), 
 						resultSet.getString("ObjectIcon"), resultSet.getString("ObjectPreview1"), resultSet.getString("ObjectTitle"),
-						resultSet.getString("DateAuthored"),resultSet.getString("Previews"),
+						resultSet.getString("AuthorName"), resultSet.getString("DateAuthored"),resultSet.getString("Previews"),
 						resultSet.getString("Likes"));
 				result.add(item);
 			}
@@ -119,7 +178,7 @@ public class SearchManager {
 		}
 
 		return result;
-	}
+	}*/
 	
 	
 	private static void close() {

@@ -1,6 +1,8 @@
 package com.myproject.rest;
 
 import javax.ws.rs.GET;
+import javax.ws.rs.MatrixParam;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
@@ -24,6 +26,16 @@ public class ReportService extends IMSService {
 		
 		return getResponse()
 				.entity(ReportManager.getReportPreview(title))
+				.build();
+	}
+	
+	@PUT
+	@Path("/likes/update")
+	public Response increaseLikes(@QueryParam("userId") String userId,
+			@QueryParam("reportTitle") String title, @QueryParam("currentLikes") String likes) {
+		
+		return getResponse()
+				.entity(String.valueOf(ReportManager.increaseLikes(title, likes)))
 				.build();
 	}
 }
