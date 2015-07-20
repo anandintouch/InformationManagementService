@@ -1,17 +1,19 @@
 package com.myproject;
 
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 public class SearchResult {
-	public SearchResultItem searchResultItem;
+	public List<SearchResultItem> searchResultItem;
 	public SearchFilters searchFiletrs;
 	
 	
-	public SearchResultItem getSearchResultItem() {
+	public List<SearchResultItem> getSearchResultItem() {
 		return searchResultItem;
 	}
-	public void setSearchResultItem(SearchResultItem searchResultItem) {
+	public void setSearchResultItem(List<SearchResultItem> searchResultItem) {
 		this.searchResultItem = searchResultItem;
 	}
 	

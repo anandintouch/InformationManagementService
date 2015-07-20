@@ -12,13 +12,12 @@ public class SearchResultItem {
 	public String objectIcon;
 	public String objectPreview1;
 	public String objectTitle;
-/*	public String authorName;
-	public String dateAuthored;*/
+	public String authorName;
+	public String dateAuthored;
 	public String previews;
 	public int comments;
 	public String likes;
-	
-	public SearchFilters searchFiletrs;
+
 /*	public boolean isFaved;
 	public boolean isLiked;
 	public boolean isSubscribed;*/
@@ -36,8 +35,8 @@ public class SearchResultItem {
 		this.objectIcon = objectIcon;
 		this.objectPreview1= objectPreview1;
 		this.objectTitle = objectTitle;
-/*		this.authorName = authorName;
-		this.dateAuthored = dateAuthored;*/
+		this.authorName = authorName;
+		this.dateAuthored = dateAuthored;
 		this.previews = previews;
 		this.likes = likes;
 		this.id = id;
@@ -53,13 +52,6 @@ public class SearchResultItem {
 	}
 	
 
-	public SearchFilters getSearchFiletrs() {
-		return searchFiletrs;
-	}
-
-	public void setSearchFiletrs(SearchFilters searchFiletrs) {
-		this.searchFiletrs = searchFiletrs;
-	}
 /*	
 	public void setCartInfo (String cartMsg, String lockedMsg) {
 		this.addToCartMsg = cartMsg;

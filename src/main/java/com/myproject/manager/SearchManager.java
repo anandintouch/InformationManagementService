@@ -102,8 +102,6 @@ public class SearchManager {
 						resultSet.getString("ObjectIcon"), resultSet.getString("ObjectPreview1"), resultSet.getString("ObjectTitle"),
 						resultSet.getString("AuthorName"), resultSet.getString("DateAuthored"),resultSet.getString("Previews"),
 						resultSet.getString("Likes"));
-				SearchFilters searchFilter = new SearchFilters(resultSet.getString("AuthorName"), resultSet.getString("DateAuthored"));
-				item.setSearchFiletrs(searchFilter);
 				result.add(item);
 			}
 			

@@ -35,8 +35,6 @@ public class SearchService extends IMSService {
 		
 		// Call class which would connect to DB and return aggregated search results resource
 		List<SearchResultItem> searchResults = SearchManager.getSearchResult(searchString);
-		
-		//return Response.status(200).entity(searchResults.toString()).build();
 
 		return getResponse()
 				.entity(searchResults)
