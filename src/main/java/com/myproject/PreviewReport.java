@@ -8,17 +8,23 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class PreviewReport {
 	public List<PreviewReportItem> views = new ArrayList<PreviewReportItem>();
-	public int authorCredit;
-	public int buyerCredit;
-	public int creditToRun;
+	public String runs;
+	public String subscribers;
+	public String kits;
+	public String favorites;
+	public int comment;
+
 	
 	public PreviewReport(){
 	}
 	
-	public PreviewReport(int aCredit, int  bCredit, int c2run) {
-		this.authorCredit = aCredit;
-		this.buyerCredit = bCredit;
-		this.creditToRun = c2run;
+	public PreviewReport(String runs,String subscribers,String kits,String favorites,
+			int comment) {
+		this.runs = runs;
+		this.subscribers = subscribers;
+		this.kits = kits;
+		this.favorites = favorites;
+		this.comment = comment;
 	}
 	
 	public static class PreviewReportItem {
