@@ -15,7 +15,8 @@ public class ReportManager {
 	private static ResultSet resultSet = null;
 
 	public static PreviewReport getReportPreview(String objectTitleShort) {
-		String query = "select ObjectPreview1, ObjectDescriptionLong, 10 as AuthorCredit, 20 as BuyerCredit, 30 as CreditsToRun from portaldb01.Object"
+		String query = "select objectpreview1,objectdescriptionlong,runs,subscribers,kits,favorites,comment"
+				+ " from portaldb01.Object"
 				+ " where ObjectTitleShort=?";
 
 		Connection conn = null;
@@ -32,7 +33,8 @@ public class ReportManager {
 			resultSet = preparedStatement.executeQuery();
 			resultSet.next();
 			
-			PreviewReport workbook = new PreviewReport(resultSet.getInt("AuthorCredit"), resultSet.getInt("BuyerCredit"), resultSet.getInt("CreditsToRun"));
+			PreviewReport workbook = new PreviewReport(resultSet.getString("runs"), resultSet.getString("subscribers"), resultSet.getString("kits"),
+					resultSet.getString("favorites"),resultSet.getInt("comment"));
 			PreviewReportItem view = new PreviewReport.PreviewReportItem(resultSet.getString("ObjectPreview1"), resultSet.getString("ObjectDescriptionLong"));
 			workbook.views.add(view);
 			
