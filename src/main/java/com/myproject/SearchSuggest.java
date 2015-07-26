@@ -5,7 +5,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class SearchSuggest {
 
-	private String id;
+	public String objectID;
  	public String objectTitleShort;
  	public String objectDescriptionShort;
  	public String objectIcon;
@@ -14,11 +14,12 @@ public class SearchSuggest {
 		// TODO Auto-generated constructor stub
 	}
  	
- 	public SearchSuggest(String objectDescriptionShort,
+ 	public SearchSuggest(String objectID,String objectDescriptionShort,
  			String objectTitleShort,String objectIcon) {
+ 		this.objectID = objectID;
  		this.objectDescriptionShort = objectDescriptionShort;
  		this.objectTitleShort = objectTitleShort;
  		this.objectIcon = objectIcon;
- 		this.id = id;
+
  	}
 }

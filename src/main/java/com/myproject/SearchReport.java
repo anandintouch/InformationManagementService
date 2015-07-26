@@ -23,7 +23,7 @@ public class SearchReport {
 	
 	public SearchReport ( String objectID, String objectURL, String objectStatus, String objectIcon, 
 			   String objectPreview1,String objectTitle, String authorName, String dateAuthored,String previews,
-			   String location, String likes) {
+			   String location,int comments, String likes) {
 
 		this.objectID = objectID;
 		this.objectURL = objectURL;
@@ -34,6 +34,7 @@ public class SearchReport {
 		this.authorName = authorName;
 		this.dateAuthored = dateAuthored;
 		this.location = location;
+		this.comments = comments;
 		this.previews = previews;
 		this.likes = likes;
 	

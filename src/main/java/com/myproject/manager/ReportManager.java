@@ -77,7 +77,7 @@ public class ReportManager {
 			preparedStatement = conn.prepareStatement(query);
 	
 			System.out.println("Prepared Statement before bind variables set:\n\t" + preparedStatement.toString());
-			preparedStatement.setInt(1, currentLikes + 1);
+			preparedStatement.setInt(1, Integer.valueOf(likes) + 1);
 			preparedStatement.setString(2, objectTitleShort );
 			System.out.println("Prepared Statement after bind variables set:\n\t" + preparedStatement.toString());
 			
