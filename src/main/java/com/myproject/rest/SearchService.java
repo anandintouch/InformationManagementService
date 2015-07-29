@@ -1,8 +1,9 @@
-package com.myproject.rest;
+ package com.myproject.rest;
 
 import java.util.List;
 
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
@@ -27,27 +28,35 @@ public class SearchService extends IMSService {
 	@GET
 	@Path("/searchresults")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getSearchResults(@QueryParam("userId") String userId,
-			@QueryParam("searchString") String searchString,@QueryParam("reportType") String reportType) throws IMApiServiceException {
+	public Response getSearchResults(@HeaderParam("Authorization") String token, @QueryParam("userId") String userId,
+			@QueryParam("searchString") String searchString,@QueryParam("reportType") String reportType) 
+					throws IMApiServiceException {
 		
-		return getResponse()
-				.entity(SearchManager.getSearchResult(searchString))
-				.build();
+		Response res = validateToken(token);
+		if (null == res) {
+			res = getResponse()
+			.entity(SearchManager.getSearchResult(searchString))
+			.build();
+		}
+		
+		return res;
 	}
 	
 	@GET
 	@Path("/searchsuggestions")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getSearchSuggestiots(@QueryParam("userId") String userId,
+	public Response getSearchSuggestions(@HeaderParam("Authorization") String token, @QueryParam("userId") String userId,
 			@QueryParam("searchString") String searchString ,@QueryParam("reportType") String reportType) throws IMApiServiceException {
 
 		// Call class which would connect to DB and return aggregated search results resource
-		List<SearchSuggest> searchSuggest = SearchManager.getSuggestions(searchString);
-
-		return getResponse()
-				.entity(searchSuggest)
-				.build();
-
+		Response res = validateToken(token);
+		if (null == res) {
+			res = getResponse()
+					.entity(SearchManager.getSuggestions(searchString))
+					.build();
+		}
+		
+		return res;
 	}
 
 }
